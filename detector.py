@@ -15,7 +15,19 @@ model = YOLO(rf'human.pt')
 deep_sort_weights = r'deep_sort/deep/checkpoint/ckpt.t7'
 tracker = DeepSort(model_path=deep_sort_weights, max_age=70)
 
+cam_credentials ={
+    'ip' : '10.71.172.253',
+    'user' : 'admin',
+    'pass': 'admin123'
+}
+
+
+def get_camera_url(ip: str, user: str, password: str):
+    return f'rtsp://{user}:{password}@{ip}:554/cam/realmonitor?channel=1&subtype=1'
+
+
 cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture(get_camera_url('10.71.172.253', 'admin', 'admin123'))
 
 
 def detect():
@@ -27,6 +39,7 @@ def detect():
 
     while True:
         _, frame = cap.read()
+        frame = cv2.resize(frame, (320, 240), interpolation=cv2.INTER_AREA)
         og_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         preds = model(frame, device=device, classes=0, conf=0.75, iou=0.5)
 
