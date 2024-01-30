@@ -44,3 +44,6 @@ tzdata==2023.3
 ultralytics==8.0.227
 urllib3==1.26.13
 Werkzeug==3.0.1
+
+easydict~=1.11
+mediapipe~=0.10.9
